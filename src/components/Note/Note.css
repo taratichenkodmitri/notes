@@ -1,0 +1,31 @@
+.note {
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  border-radius: 3px;
+  padding: 20px;
+}
+
+.note__header {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
+  color: #fff;
+}
+
+.note__body {
+  display: flex;
+  gap: 10px;
+}
+
+.note__date {
+  font-weight: 400;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.note__text {
+  font-weight: 400;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+}
