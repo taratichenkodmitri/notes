@@ -6,8 +6,9 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
-		"plugin:jsx-a11y/recommended",
-		"plugin:unicorn/all"
+    "plugin:jsx-a11y/recommended",
+    "plugin:unicorn/all",
+    "eslint-config-prettier",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parserOptions: { ecmaVersion: "latest", sourceType: "module" },
@@ -18,26 +19,17 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
-    "semi": ["error", "always"],
     "no-unused-vars": "error",
     "no-console": ["error", { allow: ["warn", "error"] }],
     "no-multi-spaces": "error",
-		"comma-dangle": ["error", {
-        "arrays": "always-multiline",
-        "objects": "always-multiline",
-        "imports": "never",
-        "exports": "never",
-        "functions": "never"
-    }],
-		quotes: ["error", "single"],
-		"unicorn/filename-case": [
-			"error",
-			{
-				"cases": {
-					"camelCase": true,
-					"pascalCase": true
-				}
-			}
-		]
+    "unicorn/filename-case": [
+      "error",
+      {
+        cases: {
+          camelCase: true,
+          pascalCase: true,
+        },
+      },
+    ],
   },
-}
+};
