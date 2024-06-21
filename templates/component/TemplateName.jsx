@@ -1,9 +1,7 @@
-import styles from './TemplateName.module.css';
+import './TemplateName.css';
 
 const TemplateName = () => {
-  return (
-    <div className={styles['template-name']}></div>
-  );
+  return <div className={'template-name'}></div>;
 };
 
 export default TemplateName;

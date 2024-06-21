@@ -1,0 +1,14 @@
+.note-button {
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  border-radius: 3px;
+  padding: 20px;
+  border: none;
+  display: block;
+  text-align: start;
+  cursor: pointer;
+}
+
+.note-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
