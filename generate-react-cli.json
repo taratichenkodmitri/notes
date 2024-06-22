@@ -15,6 +15,16 @@
         "component": "templates/component/TemplateName.jsx",
         "style": "templates/component/TemplateName.css"
       }
+    },
+    "layout": {
+      "path": "src/layout",
+      "withLazy": false,
+      "withStory": false,
+      "withStyle": true,
+      "customTemplates": {
+        "component": "templates/component/TemplateName.jsx",
+        "style": "templates/component/TemplateName.css"
+      }
     }
   }
 }

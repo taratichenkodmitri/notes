@@ -1,6 +1,10 @@
 import './App.css';
-import Button from './components/Button/Button';
+import Header from './components/Header/Header';
 import Note from './components/Note/Note';
+import NoteAddButton from './components/NoteAddButton/NoteAddButton';
+import NotesList from './components/NotesList/NotesList';
+import Body from './layout/Body/Body';
+import LeftPanel from './layout/LeftPanel/LeftPanel';
 
 function App() {
   const notes = [
@@ -15,20 +19,27 @@ function App() {
       date: new Date(),
     },
   ];
+
   return (
-    <>
-      <Note
-        title={notes[0].title}
-        text={notes[0].text}
-        date={notes[0].date}
-      />
-      <Note
-        title={notes[1].title}
-        text={notes[1].text}
-        date={notes[1].date}
-      />
-      <Button></Button>
-    </>
+    <div className="app">
+      <LeftPanel>
+        <Header />
+        <NoteAddButton />
+        <NotesList>
+          <Note
+            title={notes[0].title}
+            text={notes[0].text}
+            date={notes[0].date}
+          />
+          <Note
+            title={notes[1].title}
+            text={notes[1].text}
+            date={notes[1].date}
+          />
+        </NotesList>
+      </LeftPanel>
+      <Body>body</Body>
+    </div>
   );
 }
 
