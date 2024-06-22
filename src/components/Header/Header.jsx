@@ -1,7 +1,13 @@
 import './Header.css';
 
 const Header = () => {
-  return <div className={'header'}>Logo</div>;
+  return (
+    <img
+      src="./logo.svg"
+      alt="logo"
+      className={'header'}
+    />
+  );
 };
 
 export default Header;

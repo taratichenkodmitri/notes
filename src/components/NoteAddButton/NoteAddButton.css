@@ -1,4 +1,7 @@
 .note-add {
   padding: 10px;
-  text-align: center;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
 }
