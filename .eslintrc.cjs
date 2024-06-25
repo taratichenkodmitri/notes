@@ -20,6 +20,7 @@ module.exports = {
     'react/prop-types': [0],
     'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-multi-spaces': 'error',
+    'unicorn/consistent-function-scoping': 'off',
     'unicorn/filename-case': [
       'error',
       {

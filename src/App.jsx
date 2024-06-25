@@ -2,6 +2,7 @@ import './App.css';
 import Header from './components/Header/Header';
 import Note from './components/Note/Note';
 import NoteAddButton from './components/NoteAddButton/NoteAddButton';
+import NoteForm from './components/NoteForm/NoteForm';
 import NotesList from './components/NotesList/NotesList';
 import Body from './layout/Body/Body';
 import LeftPanel from './layout/LeftPanel/LeftPanel';
@@ -38,7 +39,9 @@ function App() {
           />
         </NotesList>
       </LeftPanel>
-      <Body>body</Body>
+      <Body>
+        <NoteForm></NoteForm>
+      </Body>
     </div>
   );
 }
