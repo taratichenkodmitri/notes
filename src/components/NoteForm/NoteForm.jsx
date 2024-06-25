@@ -2,12 +2,12 @@ import Button from '../Button/Button';
 
 import './NoteForm.css';
 
-const NoteForm = () => {
+const NoteForm = ({ onAddNote }) => {
   const addNote = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formProperties = Object.fromEntries(formData);
-    console.warn(formProperties);
+    onAddNote(formProperties);
   };
 
   return (
