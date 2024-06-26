@@ -31,7 +31,7 @@ function App() {
       {
         id: oldNotes.length > 0 ? Math.max(...oldNotes.map((n) => n.id)) + 1 : 1,
         title: createdNote.title,
-        text: createdNote.post,
+        text: createdNote.text,
         date: new Date(createdNote.date),
       },
     ]);
