@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Button from '../Button/Button';
+import cn from 'classnames';
 
 import './NoteForm.css';
 
@@ -39,12 +40,12 @@ const NoteForm = ({ onAddNote }) => {
       <input
         type="text"
         name="title"
-        className={formValidState.title ? '' : 'invalid'}
+        className={cn({ ['invalid']: !formValidState.title })}
       />
       <input
         type="date"
         name="date"
-        className={formValidState.date ? '' : 'invalid'}
+        className={cn({ ['invalid']: !formValidState.date })}
       />
       <input
         type="text"
@@ -54,7 +55,7 @@ const NoteForm = ({ onAddNote }) => {
         name="text"
         cols={30}
         rows={10}
-        className={formValidState.text ? '' : 'invalid'}
+        className={cn({ ['invalid']: !formValidState.text })}
       ></textarea>
       <Button text={'Save'} />
     </form>
