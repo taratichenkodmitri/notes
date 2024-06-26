@@ -1,14 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import cn from 'classnames';
 import styles from './NoteForm.module.css';
 
+const INITIAL_STATE = {
+  title: true,
+  text: true,
+  date: true,
+};
+
 const NoteForm = ({ onAddNote }) => {
-  const [formValidState, setFromValidState] = useState({
-    title: true,
-    text: true,
-    date: true,
-  });
+  const [formValidState, setFromValidState] =
+    useState(INITIAL_STATE);
+
+  useEffect(() => {
+    let timerId;
+    if (
+      Object.values(formValidState).some((item) => !item)
+    ) {
+      timerId = setTimeout(() => {
+        setFromValidState(INITIAL_STATE);
+      }, 2000);
+    }
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [formValidState]);
 
   const isFormValid = (formProperties) => {
     let isFormValidResult = true;
