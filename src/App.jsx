@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
-import Note from './components/Note/Note';
 import NoteAddButton from './components/NoteAddButton/NoteAddButton';
 import NoteForm from './components/NoteForm/NoteForm';
 import NotesList from './components/NotesList/NotesList';
@@ -38,25 +37,12 @@ function App() {
     ]);
   };
 
-  const sortNotes = (a, b) => {
-    return a.date > b.date ? -1 : b.date > a.date ? 1 : 0;
-  };
-
   return (
     <div className="app">
       <LeftPanel>
         <Header />
         <NoteAddButton />
-        <NotesList>
-          {notes.sort(sortNotes).map((note) => (
-            <Note
-              key={note.id}
-              title={note.title}
-              text={note.text}
-              date={note.date}
-            />
-          ))}
-        </NotesList>
+        <NotesList notes={notes} />
       </LeftPanel>
       <Body>
         <NoteForm onAddNote={addNote}></NoteForm>
