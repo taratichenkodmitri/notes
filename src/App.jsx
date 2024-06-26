@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import NoteAddButton from './components/NoteAddButton/NoteAddButton';
@@ -7,29 +7,37 @@ import NotesList from './components/NotesList/NotesList';
 import Body from './layout/Body/Body';
 import LeftPanel from './layout/LeftPanel/LeftPanel';
 
-const DEFAULT_NOTES = [
-  {
-    id: 1,
-    title: 'Подготовка к обновлению курсов',
-    text: 'Сегодня провёл весь день за...',
-    date: new Date(),
-  },
-  {
-    id: 2,
-    title: 'Поход в годы',
-    text: 'Думал, что очень много време...',
-    date: new Date(),
-  },
-];
-
 function App() {
-  const [notes, setNotes] = useState(DEFAULT_NOTES);
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    const savedNotes = JSON.parse(
+      localStorage.getItem('notes'),
+    );
+    if (savedNotes) {
+      setNotes(
+        savedNotes.map((note) => ({
+          ...note,
+          date: new Date(note.date),
+        })),
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (notes.length > 0) {
+      localStorage.setItem('notes', JSON.stringify(notes));
+    }
+  }, [notes]);
 
   const addNote = (createdNote) => {
     setNotes((oldNotes) => [
       ...oldNotes,
       {
-        id: oldNotes.length > 0 ? Math.max(...oldNotes.map((n) => n.id)) + 1 : 1,
+        id:
+          oldNotes.length > 0
+            ? Math.max(...oldNotes.map((n) => n.id)) + 1
+            : 1,
         title: createdNote.title,
         text: createdNote.text,
         date: new Date(createdNote.date),
