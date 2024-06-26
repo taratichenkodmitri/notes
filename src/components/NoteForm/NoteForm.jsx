@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import Button from '../Button/Button';
 import cn from 'classnames';
-
-import './NoteForm.css';
+import styles from './NoteForm.module.css';
 
 const NoteForm = ({ onAddNote }) => {
   const [formValidState, setFromValidState] = useState({
@@ -16,10 +15,16 @@ const NoteForm = ({ onAddNote }) => {
     for (let key in formProperties) {
       if (!(key in formValidState)) continue;
       if (formProperties[key]?.trim().length === 0) {
-        setFromValidState((state) => ({ ...state, [key]: false }));
+        setFromValidState((state) => ({
+          ...state,
+          [key]: false,
+        }));
         isFormValidResult = false;
       } else {
-        setFromValidState((state) => ({ ...state, [key]: true }));
+        setFromValidState((state) => ({
+          ...state,
+          [key]: true,
+        }));
       }
     }
     return isFormValidResult;
@@ -29,33 +34,76 @@ const NoteForm = ({ onAddNote }) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formProperties = Object.fromEntries(formData);
-    if (isFormValid(formProperties)) onAddNote(formProperties);
+    if (isFormValid(formProperties))
+      onAddNote(formProperties);
   };
 
   return (
     <form
-      className={'note-form'}
+      className={styles['note-form']}
       onSubmit={addNote}
     >
-      <input
-        type="text"
-        name="title"
-        className={cn({ ['invalid']: !formValidState.title })}
-      />
-      <input
-        type="date"
-        name="date"
-        className={cn({ ['invalid']: !formValidState.date })}
-      />
-      <input
-        type="text"
-        name="tag"
-      />
+      <div>
+        <input
+          type="text"
+          name="title"
+          className={cn(
+            styles['input-title'],
+            styles['input-title'],
+            {
+              [styles['invalid']]: !formValidState.title,
+            },
+          )}
+        />
+      </div>
+
+      <div className={styles['form-row']}>
+        <label
+          htmlFor="date"
+          className={styles['form-label']}
+        >
+          <img
+            src="./calendar.svg"
+            alt="Calendar icon"
+          />
+          <span>Date</span>
+        </label>
+        <input
+          id="date"
+          type="date"
+          name="date"
+          className={cn(styles['input'], {
+            [styles['invalid']]: !formValidState.date,
+          })}
+        />
+      </div>
+
+      <div className={styles['form-row']}>
+        <label
+          htmlFor="tag"
+          className={styles['form-label']}
+        >
+          <img
+            src="./folder.svg"
+            alt="Folder icon"
+          />
+          <span>Tag</span>
+        </label>
+        <input
+          id="tag"
+          type="text"
+          name="tag"
+          className={styles['input']}
+        />
+      </div>
+
       <textarea
         name="text"
         cols={30}
         rows={10}
-        className={cn({ ['invalid']: !formValidState.text })}
+        className={cn(styles['input'], {
+          [styles['invalid']]: !formValidState.text,
+        })}
       ></textarea>
       <Button text={'Save'} />
     </form>
