@@ -29,7 +29,7 @@ function App() {
     setNotes((oldNotes) => [
       ...oldNotes,
       {
-        id: Math.max(...oldNotes.map((n) => n.id)) + 1,
+        id: oldNotes.length > 0 ? Math.max(...oldNotes.map((n) => n.id)) + 1 : 1,
         title: createdNote.title,
         text: createdNote.post,
         date: new Date(createdNote.date),
