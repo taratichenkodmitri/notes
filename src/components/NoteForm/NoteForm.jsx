@@ -25,16 +25,22 @@ const NoteForm = ({ onAddNote }) => {
   useEffect(() => {
     if (isFormReadyToSubmit) {
       onAddNote(values);
+      dispatchForm({ type: 'RESET_VALUES' });
     }
-  }, [isFormReadyToSubmit]);
+  }, [isFormReadyToSubmit, values, onAddNote]);
 
   const addNote = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const formProperties = Object.fromEntries(formData);
+    dispatchForm({ type: 'SUBMIT' });
+  };
+
+  const onInputChange = (event) => {
     dispatchForm({
-      type: 'SUBMIT',
-      payload: formProperties,
+      type: 'CHANGE_INPUT_VALUE',
+      payload: {
+        name: event.target.name,
+        value: event.target.value,
+      },
     });
   };
 
@@ -50,6 +56,8 @@ const NoteForm = ({ onAddNote }) => {
           className={cn(styles['input-title'], styles['input-title'], {
             [styles['invalid']]: !isValid.title,
           })}
+          onChange={onInputChange}
+          value={values.title}
         />
       </div>
 
@@ -71,6 +79,8 @@ const NoteForm = ({ onAddNote }) => {
           className={cn(styles['input'], {
             [styles['invalid']]: !isValid.date,
           })}
+          onChange={onInputChange}
+          value={values.date}
         />
       </div>
 
@@ -90,6 +100,8 @@ const NoteForm = ({ onAddNote }) => {
           type="text"
           name="tag"
           className={styles['input']}
+          onChange={onInputChange}
+          value={values.tag}
         />
       </div>
 
@@ -100,6 +112,8 @@ const NoteForm = ({ onAddNote }) => {
         className={cn(styles['input'], {
           [styles['invalid']]: !isValid.text,
         })}
+        onChange={onInputChange}
+        value={values.text}
       ></textarea>
       <Button text={'Save'} />
     </form>

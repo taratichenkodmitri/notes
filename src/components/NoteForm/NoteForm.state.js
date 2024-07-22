@@ -5,11 +5,12 @@ export const INITIAL_STATE = {
     date: true,
   },
   values: {
-    title: undefined,
-    text: undefined,
-    date: undefined,
+    title: '',
+    text: '',
+    date: '',
+    tag: '',
   },
-  isFormReadyToSubmit: true,
+  isFormReadyToSubmit: false,
 };
 
 export function formReducer(state, action) {
@@ -21,15 +22,31 @@ export function formReducer(state, action) {
       };
     }
     case 'SUBMIT': {
-      let isValid = { ...INITIAL_STATE.isValid };
-      for (let key in action.payload) {
-        if (!(key in isValid)) continue;
-        isValid[key] = Boolean(action.payload[key]?.trim().length);
+      let isValid = {};
+      for (let key in state.values) {
+        if (!(key in INITIAL_STATE.isValid)) continue;
+        isValid[key] = Boolean(state.values[key]?.trim().length);
       }
       return {
-        values: action.payload,
+        ...state,
         isValid: isValid,
         isFormReadyToSubmit: Object.values(isValid).every((item) => item === true),
+      };
+    }
+    case 'CHANGE_INPUT_VALUE': {
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [action.payload.name]: action.payload.value,
+        },
+      };
+    }
+    case 'RESET_VALUES': {
+      return {
+        ...state,
+        values: INITIAL_STATE.values,
+        isFormReadyToSubmit: false,
       };
     }
   }
