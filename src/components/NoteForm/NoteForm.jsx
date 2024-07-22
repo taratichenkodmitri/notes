@@ -1,59 +1,41 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import Button from '../Button/Button';
 import cn from 'classnames';
 import styles from './NoteForm.module.css';
-
-const INITIAL_STATE = {
-  title: true,
-  text: true,
-  date: true,
-};
+import { INITIAL_STATE, formReducer } from './NoteForm.state';
 
 const NoteForm = ({ onAddNote }) => {
-  const [formValidState, setFromValidState] =
-    useState(INITIAL_STATE);
+  const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
+  const { isValid, values, isFormReadyToSubmit } = formState;
 
   useEffect(() => {
     let timerId;
-    if (
-      Object.values(formValidState).some((item) => !item)
-    ) {
+
+    if (Object.values(isValid).some((item) => !item)) {
       timerId = setTimeout(() => {
-        setFromValidState(INITIAL_STATE);
+        dispatchForm({ type: 'RESET_VALIDITY' });
       }, 2000);
     }
 
     return () => {
       clearTimeout(timerId);
     };
-  }, [formValidState]);
+  }, [isValid]);
 
-  const isFormValid = (formProperties) => {
-    let isFormValidResult = true;
-    for (let key in formProperties) {
-      if (!(key in formValidState)) continue;
-      if (formProperties[key]?.trim().length === 0) {
-        setFromValidState((state) => ({
-          ...state,
-          [key]: false,
-        }));
-        isFormValidResult = false;
-      } else {
-        setFromValidState((state) => ({
-          ...state,
-          [key]: true,
-        }));
-      }
+  useEffect(() => {
+    if (isFormReadyToSubmit) {
+      onAddNote(values);
     }
-    return isFormValidResult;
-  };
+  }, [isFormReadyToSubmit]);
 
   const addNote = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formProperties = Object.fromEntries(formData);
-    if (isFormValid(formProperties))
-      onAddNote(formProperties);
+    dispatchForm({
+      type: 'SUBMIT',
+      payload: formProperties,
+    });
   };
 
   return (
@@ -65,13 +47,9 @@ const NoteForm = ({ onAddNote }) => {
         <input
           type="text"
           name="title"
-          className={cn(
-            styles['input-title'],
-            styles['input-title'],
-            {
-              [styles['invalid']]: !formValidState.title,
-            },
-          )}
+          className={cn(styles['input-title'], styles['input-title'], {
+            [styles['invalid']]: !isValid.title,
+          })}
         />
       </div>
 
@@ -91,7 +69,7 @@ const NoteForm = ({ onAddNote }) => {
           type="date"
           name="date"
           className={cn(styles['input'], {
-            [styles['invalid']]: !formValidState.date,
+            [styles['invalid']]: !isValid.date,
           })}
         />
       </div>
@@ -120,7 +98,7 @@ const NoteForm = ({ onAddNote }) => {
         cols={30}
         rows={10}
         className={cn(styles['input'], {
-          [styles['invalid']]: !formValidState.text,
+          [styles['invalid']]: !isValid.text,
         })}
       ></textarea>
       <Button text={'Save'} />
