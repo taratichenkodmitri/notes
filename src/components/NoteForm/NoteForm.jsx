@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import Button from '../Button/Button';
 import cn from 'classnames';
 import styles from './NoteForm.module.css';
@@ -7,11 +7,32 @@ import { INITIAL_STATE, formReducer } from './NoteForm.state';
 const NoteForm = ({ onAddNote }) => {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, values, isFormReadyToSubmit } = formState;
+  const titleReference = useRef();
+  const dateReference = useRef();
+  const textReference = useRef();
+
+  const focusError = () => {
+    switch (true) {
+      case !isValid.title: {
+        titleReference.current.focus();
+        break;
+      }
+      case !isValid.date: {
+        dateReference.current.focus();
+        break;
+      }
+      case !isValid.text: {
+        textReference.current.focus();
+        break;
+      }
+    }
+  };
 
   useEffect(() => {
     let timerId;
 
     if (Object.values(isValid).some((item) => !item)) {
+      focusError();
       timerId = setTimeout(() => {
         dispatchForm({ type: 'RESET_VALIDITY' });
       }, 2000);
@@ -56,6 +77,7 @@ const NoteForm = ({ onAddNote }) => {
           className={cn(styles['input-title'], styles['input-title'], {
             [styles['invalid']]: !isValid.title,
           })}
+          ref={textReference}
           onChange={onInputChange}
           value={values.title}
         />
@@ -76,6 +98,7 @@ const NoteForm = ({ onAddNote }) => {
           id="date"
           type="date"
           name="date"
+          ref={dateReference}
           className={cn(styles['input'], {
             [styles['invalid']]: !isValid.date,
           })}
@@ -112,6 +135,7 @@ const NoteForm = ({ onAddNote }) => {
         className={cn(styles['input'], {
           [styles['invalid']]: !isValid.text,
         })}
+        ref={textReference}
         onChange={onInputChange}
         value={values.text}
       ></textarea>
