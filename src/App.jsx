@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import NoteAddButton from './components/NoteAddButton/NoteAddButton';
@@ -6,38 +5,24 @@ import NoteForm from './components/NoteForm/NoteForm';
 import NotesList from './components/NotesList/NotesList';
 import Body from './layout/Body/Body';
 import LeftPanel from './layout/LeftPanel/LeftPanel';
+import useLocalStorage from './hooks/localStorage.hook';
+
+const formatNotes = (notes) => {
+  if (!notes) return [];
+  return notes.map((note) => ({
+    ...note,
+    date: new Date(note.date),
+  }));
+};
 
 function App() {
-  const [notes, setNotes] = useState([]);
-
-  useEffect(() => {
-    const savedNotes = JSON.parse(
-      localStorage.getItem('notes'),
-    );
-    if (savedNotes) {
-      setNotes(
-        savedNotes.map((note) => ({
-          ...note,
-          date: new Date(note.date),
-        })),
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    if (notes.length > 0) {
-      localStorage.setItem('notes', JSON.stringify(notes));
-    }
-  }, [notes]);
+  const [notes, setNotes] = useLocalStorage('notes');
 
   const addNote = (createdNote) => {
-    setNotes((oldNotes) => [
-      ...oldNotes,
+    setNotes([
+      ...formatNotes(notes),
       {
-        id:
-          oldNotes.length > 0
-            ? Math.max(...oldNotes.map((n) => n.id)) + 1
-            : 1,
+        id: notes ? Math.max(...notes.map((n) => n.id)) + 1 : 1,
         title: createdNote.title,
         text: createdNote.text,
         date: new Date(createdNote.date),
@@ -50,7 +35,7 @@ function App() {
       <LeftPanel>
         <Header />
         <NoteAddButton />
-        <NotesList notes={notes} />
+        <NotesList notes={formatNotes(notes)} />
       </LeftPanel>
       <Body>
         <NoteForm onAddNote={addNote}></NoteForm>
