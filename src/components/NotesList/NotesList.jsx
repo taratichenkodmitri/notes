@@ -1,7 +1,11 @@
 import './NotesList.css';
 import Note from '../Note/Note';
+import { useContext } from 'react';
+import { WorkspaceContext } from '../../context/workspace.context';
 
 const NotesList = ({ notes }) => {
+  const { workspaceId } = useContext(WorkspaceContext);
+
   if (notes.length === 0) return <p>Empty</p>;
 
   const sortNotes = (a, b) => {
@@ -10,14 +14,17 @@ const NotesList = ({ notes }) => {
 
   return (
     <div className={'notes-list'}>
-      {notes.sort(sortNotes).map((note) => (
-        <Note
-          key={note.id}
-          title={note.title}
-          text={note.text}
-          date={note.date}
-        />
-      ))}
+      {notes
+        .filter((note) => note.workspaceId === workspaceId)
+        .sort(sortNotes)
+        .map((note) => (
+          <Note
+            key={note.id}
+            title={note.title}
+            text={note.text}
+            date={note.date}
+          />
+        ))}
     </div>
   );
 };

@@ -33,12 +33,12 @@ export function formReducer(state, action) {
         isFormReadyToSubmit: Object.values(isValid).every((item) => item === true),
       };
     }
-    case 'CHANGE_INPUT_VALUE': {
+    case 'SET_VALUE': {
       return {
         ...state,
         values: {
           ...state.values,
-          [action.payload.name]: action.payload.value,
+          ...action.payload,
         },
       };
     }

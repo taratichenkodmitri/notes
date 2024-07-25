@@ -1,12 +1,14 @@
-import { useEffect, useReducer, useRef } from 'react';
+import { useContext, useEffect, useReducer, useRef } from 'react';
 import Button from '../Button/Button';
 import cn from 'classnames';
 import styles from './NoteForm.module.css';
 import { INITIAL_STATE, formReducer } from './NoteForm.state';
+import { WorkspaceContext } from '../../context/workspace.context';
 
 const NoteForm = ({ onAddNote }) => {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, values, isFormReadyToSubmit } = formState;
+  const { workspaceId } = useContext(WorkspaceContext);
   const titleReference = useRef();
   const dateReference = useRef();
   const textReference = useRef();
@@ -50,6 +52,10 @@ const NoteForm = ({ onAddNote }) => {
     }
   }, [isFormReadyToSubmit, values, onAddNote]);
 
+  useEffect(() => {
+    dispatchForm({ type: 'SET_VALUE', payload: { workspaceId } });
+  }, [workspaceId]);
+
   const addNote = (event) => {
     event.preventDefault();
     dispatchForm({ type: 'SUBMIT' });
@@ -57,10 +63,9 @@ const NoteForm = ({ onAddNote }) => {
 
   const onInputChange = (event) => {
     dispatchForm({
-      type: 'CHANGE_INPUT_VALUE',
+      type: 'SET_VALUE',
       payload: {
-        name: event.target.name,
-        value: event.target.value,
+        [event.target.name]: event.target.value,
       },
     });
   };

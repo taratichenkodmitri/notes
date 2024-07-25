@@ -6,6 +6,7 @@ import NotesList from './components/NotesList/NotesList';
 import Body from './layout/Body/Body';
 import LeftPanel from './layout/LeftPanel/LeftPanel';
 import useLocalStorage from './hooks/localStorage.hook';
+import { WorkspaceContextProvider } from './context/workspace.context';
 
 const formatNotes = (notes) => {
   if (!notes) return [];
@@ -26,21 +27,24 @@ function App() {
         title: createdNote.title,
         text: createdNote.text,
         date: new Date(createdNote.date),
+        workspaceId: createdNote.workspaceId,
       },
     ]);
   };
 
   return (
-    <div className="app">
-      <LeftPanel>
-        <Header />
-        <NoteAddButton />
-        <NotesList notes={formatNotes(notes)} />
-      </LeftPanel>
-      <Body>
-        <NoteForm onAddNote={addNote}></NoteForm>
-      </Body>
-    </div>
+    <WorkspaceContextProvider>
+      <div className="app">
+        <LeftPanel>
+          <Header />
+          <NoteAddButton />
+          <NotesList notes={formatNotes(notes)} />
+        </LeftPanel>
+        <Body>
+          <NoteForm onAddNote={addNote}></NoteForm>
+        </Body>
+      </div>
+    </WorkspaceContextProvider>
   );
 }
 
