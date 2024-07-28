@@ -1,10 +1,14 @@
 import './NotesList.css';
 import Note from '../Note/Note';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { WorkspaceContext } from '../../context/workspace.context';
 
-const NotesList = ({ notes }) => {
+const NotesList = ({ notes, setSelectedNote }) => {
   const { workspaceId } = useContext(WorkspaceContext);
+
+  useEffect(() => {
+    setSelectedNote({});
+  }, [setSelectedNote, workspaceId]);
 
   if (notes.length === 0) return <p>Empty</p>;
 
@@ -19,6 +23,7 @@ const NotesList = ({ notes }) => {
         .sort(sortNotes)
         .map((note) => (
           <Note
+            onClick={() => setSelectedNote(note)}
             key={note.id}
             title={note.title}
             text={note.text}

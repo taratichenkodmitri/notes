@@ -5,7 +5,7 @@ import styles from './NoteForm.module.css';
 import { INITIAL_STATE, formReducer } from './NoteForm.state';
 import { WorkspaceContext } from '../../context/workspace.context';
 
-const NoteForm = ({ onAddNote }) => {
+const NoteForm = ({ onAddNote, selectedNote }) => {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, values, isFormReadyToSubmit } = formState;
   const { workspaceId } = useContext(WorkspaceContext);
@@ -31,6 +31,18 @@ const NoteForm = ({ onAddNote }) => {
   };
 
   useEffect(() => {
+    if (Object.keys(selectedNote).length === 0) {
+      dispatchForm({ type: 'RESET_VALUES' });
+      dispatchForm({ type: 'SET_VALUE', payload: { workspaceId } });
+      return;
+    }
+    dispatchForm({
+      type: 'SET_VALUE',
+      payload: { ...selectedNote, date: selectedNote.date ? selectedNote.date.toISOString().slice(0, 10) : '' },
+    });
+  }, [selectedNote]);
+
+  useEffect(() => {
     let timerId;
 
     if (Object.values(isValid).some((item) => !item)) {
@@ -49,8 +61,9 @@ const NoteForm = ({ onAddNote }) => {
     if (isFormReadyToSubmit) {
       onAddNote(values);
       dispatchForm({ type: 'RESET_VALUES' });
+      dispatchForm({ type: 'SET_VALUE', payload: { workspaceId } });
     }
-  }, [isFormReadyToSubmit, values, onAddNote]);
+  }, [isFormReadyToSubmit, values, onAddNote, workspaceId]);
 
   useEffect(() => {
     dispatchForm({ type: 'SET_VALUE', payload: { workspaceId } });
@@ -79,10 +92,10 @@ const NoteForm = ({ onAddNote }) => {
         <input
           type="text"
           name="title"
-          className={cn(styles['input-title'], styles['input-title'], {
+          className={cn(styles['input'], styles['input-title'], {
             [styles['invalid']]: !isValid.title,
           })}
-          ref={textReference}
+          ref={titleReference}
           onChange={onInputChange}
           value={values.title}
         />
