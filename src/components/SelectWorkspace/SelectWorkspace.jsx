@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import './SelectWorkspace.css';
+import styles from './SelectWorkspace.module.css';
 import { WorkspaceContext } from '../../context/workspace.context';
 
 const SelectWorkspace = () => {
@@ -11,7 +11,7 @@ const SelectWorkspace = () => {
 
   return (
     <select
-      className={'select-workspace'}
+      className={styles['select-workspace']}
       value={workspaceId}
       onChange={changeWorkspace}
     >
