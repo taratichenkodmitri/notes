@@ -1,9 +1,12 @@
 import NoteButton from '../NoteButton/NoteButton';
 import './NoteAddButton.css';
 
-const NoteAddButton = () => {
+const NoteAddButton = ({ ...properties }) => {
   return (
-    <NoteButton additionalClass="note-add">
+    <NoteButton
+      {...properties}
+      additionalClass="note-add"
+    >
       <img
         src="./add.svg"
         alt="add icon"

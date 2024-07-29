@@ -36,7 +36,7 @@ function App() {
     setNotes([
       ...formatNotes(notes),
       {
-        id: notes ? Math.max(...notes.map((n) => n.id)) + 1 : 1,
+        id: notes && notes.length > 0 ? Math.max(...notes.map((n) => n.id)) + 1 : 1,
         title: createdNote.title,
         text: createdNote.text,
         date: new Date(createdNote.date),
@@ -46,7 +46,7 @@ function App() {
   };
 
   const deleteNote = (id) => {
-    setNotes([...formatNotes(notes)].filter(note => note.id !== id));
+    setNotes([...formatNotes(notes)].filter((note) => note.id !== id));
   };
 
   return (
@@ -54,7 +54,7 @@ function App() {
       <div className="app">
         <LeftPanel>
           <Header />
-          <NoteAddButton />
+          <NoteAddButton onClick={() => setSelectedNote({})} />
           <NotesList
             notes={formatNotes(notes)}
             setSelectedNote={setSelectedNote}
