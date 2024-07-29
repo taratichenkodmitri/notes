@@ -45,6 +45,10 @@ function App() {
     ]);
   };
 
+  const deleteNote = (id) => {
+    setNotes([...formatNotes(notes)].filter(note => note.id !== id));
+  };
+
   return (
     <WorkspaceContextProvider>
       <div className="app">
@@ -59,6 +63,7 @@ function App() {
         <Body>
           <NoteForm
             onAddNote={addNote}
+            onDeleteNote={deleteNote}
             selectedNote={selectedNote}
           ></NoteForm>
         </Body>

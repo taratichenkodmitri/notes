@@ -1,5 +1,5 @@
 import './Button.css';
 
-const Button = ({ text }) => <button className="button accent">{text}</button>;
+const Button = ({ children, ...properties }) => <button {...properties} className="button accent">{children}</button>;
 
 export default Button;

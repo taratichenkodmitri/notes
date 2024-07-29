@@ -5,7 +5,7 @@ import styles from './NoteForm.module.css';
 import { INITIAL_STATE, formReducer } from './NoteForm.state';
 import { WorkspaceContext } from '../../context/workspace.context';
 
-const NoteForm = ({ onAddNote, selectedNote }) => {
+const NoteForm = ({ onAddNote, onDeleteNote, selectedNote }) => {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, values, isFormReadyToSubmit } = formState;
   const { workspaceId } = useContext(WorkspaceContext);
@@ -74,6 +74,12 @@ const NoteForm = ({ onAddNote, selectedNote }) => {
     dispatchForm({ type: 'SUBMIT' });
   };
 
+  const deleteNote = () => {
+    onDeleteNote(selectedNote.id);
+    dispatchForm({ type: 'RESET_VALUES' });
+    dispatchForm({ type: 'SET_VALUE', payload: { workspaceId } });
+  };
+
   const onInputChange = (event) => {
     dispatchForm({
       type: 'SET_VALUE',
@@ -88,7 +94,7 @@ const NoteForm = ({ onAddNote, selectedNote }) => {
       className={styles['note-form']}
       onSubmit={addNote}
     >
-      <div>
+      <div className={styles['form-row']}>
         <input
           type="text"
           name="title"
@@ -99,6 +105,18 @@ const NoteForm = ({ onAddNote, selectedNote }) => {
           onChange={onInputChange}
           value={values.title}
         />
+        {selectedNote.id && (
+          <button
+            className={styles['delete']}
+            onClick={deleteNote}
+            type="button"
+          >
+            <img
+              src="archive.svg"
+              alt="archive icon"
+            />
+          </button>
+        )}
       </div>
 
       <div className={styles['form-row']}>
@@ -157,7 +175,7 @@ const NoteForm = ({ onAddNote, selectedNote }) => {
         onChange={onInputChange}
         value={values.text}
       ></textarea>
-      <Button text={'Save'} />
+      <Button>Save</Button>
     </form>
   );
 };
